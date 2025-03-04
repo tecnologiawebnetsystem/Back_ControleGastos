@@ -9,8 +9,58 @@ const logger = require("./config/logger")
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// Middleware
-app.use(cors())
+// Configuração CORS mais detalhada
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Permitir requisições sem origin (como apps mobile ou curl)
+    if (!origin) return callback(null, true)
+
+    // Lista de origens permitidas
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://localhost:5173", // Vite padrão
+      "http://localhost:8080",
+      "https://seu-frontend.vercel.app", // Substitua pelo seu domínio frontend
+      /\.render\.com$/, // Permite todos os domínios do Render
+    ]
+
+    // Verificar se a origem está na lista ou corresponde ao padrão regex
+    const allowed = allowedOrigins.some((allowedOrigin) => {
+      if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin)
+      }
+      return allowedOrigin === origin
+    })
+
+    if (allowed) {
+      callback(null, true)
+    } else {
+      callback(new Error(`Origem ${origin} não permitida por CORS`))
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+}
+
+// Aplicar CORS
+app.use(cors(corsOptions))
+
+// Middleware para lidar com erros de CORS
+app.use((err, req, res, next) => {
+  if (err.message.includes("CORS")) {
+    logger.error(`Erro de CORS: ${err.message}`)
+    return res.status(403).json({
+      status: "error",
+      message: "Acesso não permitido por CORS",
+      details: process.env.NODE_ENV === "development" ? err.message : {},
+    })
+  }
+  next(err)
+})
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
