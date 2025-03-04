@@ -1,0 +1,2108 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Controle de Gastos",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de gastos pessoais"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "Nome": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Senha": {
+            "type": "string"
+          },
+          "Adm": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Categoria": {
+        "type": "object",
+        "properties": {
+          "CategoriaID": {
+            "type": "integer"
+          },
+          "Nome": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "Coeficiente": {
+            "type": "integer"
+          }
+        }
+      },
+      "Banco": {
+        "type": "object",
+        "properties": {
+          "BancoID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "Nome": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "Codigo": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "Agencia": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "Conta": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "Pix": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      },
+      "Despesa": {
+        "type": "object",
+        "properties": {
+          "DespesasID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "CategoriaID": {
+            "type": "integer"
+          },
+          "Descricao": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "Valor": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "DataVencimento": {
+            "type": "string",
+            "format": "date"
+          },
+          "DataPagamento": {
+            "type": "string",
+            "format": "date"
+          },
+          "Parcelado": {
+            "type": "boolean"
+          },
+          "NumeroTotalParcelas": {
+            "type": "integer"
+          },
+          "NumeroParcela": {
+            "type": "integer"
+          },
+          "Status": {
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "TipoContratacao": {
+        "type": "object",
+        "properties": {
+          "TipoContratacaoID": {
+            "type": "integer"
+          },
+          "Descricao": {
+            "type": "string"
+          }
+        }
+      },
+      "Empresa": {
+        "type": "object",
+        "properties": {
+          "EmpresaID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "Nome": {
+            "type": "string"
+          },
+          "Cliente": {
+            "type": "string"
+          },
+          "TipoContratacaoID": {
+            "type": "integer"
+          },
+          "Valor": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "ValorVA": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "Ativo": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Entrada": {
+        "type": "object",
+        "properties": {
+          "EntradaID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "CategoriaID": {
+            "type": "integer"
+          },
+          "EmpresaID": {
+            "type": "integer"
+          },
+          "Descricao": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "Valor": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "DataRecebimento": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "TipoOperacao": {
+        "type": "object",
+        "properties": {
+          "TipoOperacaoID": {
+            "type": "integer"
+          },
+          "Descricao": {
+            "type": "string"
+          },
+          "Coeficiente": {
+            "type": "integer"
+          }
+        }
+      },
+      "Poupanca": {
+        "type": "object",
+        "properties": {
+          "PoupancaID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "BancoID": {
+            "type": "integer"
+          },
+          "Valor": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "DataOperacao": {
+            "type": "string",
+            "format": "date"
+          },
+          "Descricao": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "TipoOperacaoID": {
+            "type": "integer"
+          }
+        }
+      },
+      "Movimentacao": {
+        "type": "object",
+        "properties": {
+          "MovimentacaoID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "Tipo": {
+            "type": "string",
+            "enum": ["Entrada", "Despesa", "Poupanca"]
+          },
+          "Descricao": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "Valor": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "Data": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CategoriaID": {
+            "type": "integer"
+          },
+          "EmpresaID": {
+            "type": "integer"
+          },
+          "BancoID": {
+            "type": "integer"
+          },
+          "Status": {
+            "type": "string",
+            "maxLength": 20
+          }
+        }
+      },
+      "CartaoCredito": {
+        "type": "object",
+        "properties": {
+          "CartaoCreditoID": {
+            "type": "integer"
+          },
+          "UsuarioID": {
+            "type": "integer"
+          },
+          "BancoID": {
+            "type": "integer"
+          },
+          "ValorCredito": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "DataVencimento": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "StatusPagamento": {
+        "type": "object",
+        "properties": {
+          "StatusPagamentoID": {
+            "type": "integer"
+          },
+          "Descricao": {
+            "type": "string",
+            "maxLength": 100
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Autenticar usuário",
+        "tags": ["Autenticação"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "senha": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "token": {
+                      "type": "string"
+                    },
+                    "usuario": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "nome": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        },
+        "security": []
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "summary": "Lista todos os usuários",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Usuario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo usuário",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado"
+          }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "summary": "Obtém um usuário específico",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do usuário",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Usuario"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um usuário",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um usuário",
+        "tags": ["Usuários"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário excluído"
+          }
+        }
+      }
+    },
+    "/categorias": {
+      "get": {
+        "summary": "Lista todas as categorias",
+        "tags": ["Categorias"],
+        "responses": {
+          "200": {
+            "description": "Lista de categorias",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Categoria"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova categoria",
+        "tags": ["Categorias"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Categoria"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada"
+          }
+        }
+      }
+    },
+    "/categorias/{id}": {
+      "get": {
+        "summary": "Obtém uma categoria específica",
+        "tags": ["Categorias"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da categoria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Categoria"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma categoria",
+        "tags": ["Categorias"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Categoria"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Categoria atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma categoria",
+        "tags": ["Categorias"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categoria excluída"
+          }
+        }
+      }
+    },
+    "/bancos": {
+      "get": {
+        "summary": "Lista todos os bancos",
+        "tags": ["Bancos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de bancos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Banco"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo banco",
+        "tags": ["Bancos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Banco"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Banco criado"
+          }
+        }
+      }
+    },
+    "/bancos/{id}": {
+      "get": {
+        "summary": "Obtém um banco específico",
+        "tags": ["Bancos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do banco",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Banco"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um banco",
+        "tags": ["Bancos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Banco"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Banco atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um banco",
+        "tags": ["Bancos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Banco excluído"
+          }
+        }
+      }
+    },
+    "/despesas": {
+      "get": {
+        "summary": "Lista todas as despesas",
+        "tags": ["Despesas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de despesas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Despesa"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova despesa",
+        "tags": ["Despesas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Despesa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Despesa criada"
+          }
+        }
+      }
+    },
+    "/despesas/{id}": {
+      "get": {
+        "summary": "Obtém uma despesa específica",
+        "tags": ["Despesas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da despesa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Despesa"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma despesa",
+        "tags": ["Despesas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Despesa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Despesa atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma despesa",
+        "tags": ["Despesas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Despesa excluída"
+          }
+        }
+      }
+    },
+    "/tipos-contratacao": {
+      "get": {
+        "summary": "Lista todos os tipos de contratação",
+        "tags": ["Tipos de Contratação"],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de contratação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoContratacao"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo tipo de contratação",
+        "tags": ["Tipos de Contratação"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoContratacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de contratação criado"
+          }
+        }
+      }
+    },
+    "/tipos-contratacao/{id}": {
+      "get": {
+        "summary": "Obtém um tipo de contratação específico",
+        "tags": ["Tipos de Contratação"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do tipo de contratação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TipoContratacao"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um tipo de contratação",
+        "tags": ["Tipos de Contratação"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoContratacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo de contratação atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um tipo de contratação",
+        "tags": ["Tipos de Contratação"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de contratação excluído"
+          }
+        }
+      }
+    },
+    "/empresas": {
+      "get": {
+        "summary": "Lista todas as empresas",
+        "tags": ["Empresas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de empresas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Empresa"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova empresa",
+        "tags": ["Empresas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Empresa criada"
+          }
+        }
+      }
+    },
+    "/empresas/{id}": {
+      "get": {
+        "summary": "Obtém uma empresa específica",
+        "tags": ["Empresas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da empresa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Empresa"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma empresa",
+        "tags": ["Empresas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Empresa"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Empresa atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma empresa",
+        "tags": ["Empresas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Empresa excluída"
+          }
+        }
+      }
+    },
+    "/entradas": {
+      "get": {
+        "summary": "Lista todas as entradas",
+        "tags": ["Entradas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de entradas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Entrada"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova entrada",
+        "tags": ["Entradas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Entrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entrada criada"
+          }
+        }
+      }
+    },
+    "/entradas/{id}": {
+      "get": {
+        "summary": "Obtém uma entrada específica",
+        "tags": ["Entradas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da entrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma entrada",
+        "tags": ["Entradas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Entrada"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entrada atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma entrada",
+        "tags": ["Entradas"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entrada excluída"
+          }
+        }
+      }
+    },
+    "/tipos-operacao": {
+      "get": {
+        "summary": "Lista todos os tipos de operação",
+        "tags": ["Tipos de Operação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de tipos de operação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TipoOperacao"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo tipo de operação",
+        "tags": ["Tipos de Operação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoOperacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tipo de operação criado"
+          }
+        }
+      }
+    },
+    "/tipos-operacao/{id}": {
+      "get": {
+        "summary": "Obtém um tipo de operação específico",
+        "tags": ["Tipos de Operação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do tipo de operação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TipoOperacao"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um tipo de operação",
+        "tags": ["Tipos de Operação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TipoOperacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tipo de operação atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um tipo de operação",
+        "tags": ["Tipos de Operação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tipo de operação excluído"
+          }
+        }
+      }
+    },
+    "/poupancas": {
+      "get": {
+        "summary": "Lista todas as poupanças",
+        "tags": ["Poupanças"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de poupanças",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Poupanca"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova poupança",
+        "tags": ["Poupanças"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Poupanca"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Poupança criada"
+          }
+        }
+      }
+    },
+    "/poupancas/{id}": {
+      "get": {
+        "summary": "Obtém uma poupança específica",
+        "tags": ["Poupanças"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da poupança",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Poupanca"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma poupança",
+        "tags": ["Poupanças"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Poupanca"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Poupança atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma poupança",
+        "tags": ["Poupanças"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Poupança excluída"
+          }
+        }
+      }
+    },
+    "/movimentacoes": {
+      "get": {
+        "summary": "Lista todas as movimentações",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dataInicio",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data de início para filtrar movimentações"
+          },
+          {
+            "in": "query",
+            "name": "dataFim",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data de fim para filtrar movimentações"
+          },
+          {
+            "in": "query",
+            "name": "tipo",
+            "schema": {
+              "type": "string",
+              "enum": ["Entrada", "Despesa", "Poupanca"]
+            },
+            "description": "Tipo de movimentação para filtrar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de movimentações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movimentacao"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova movimentação",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movimentacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Movimentação criada"
+          }
+        }
+      }
+    },
+    "/movimentacoes/{id}": {
+      "get": {
+        "summary": "Obtém uma movimentação específica",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da movimentação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movimentacao"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma movimentação",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movimentacao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Movimentação atualizada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui uma movimentação",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movimentação excluída"
+          }
+        }
+      }
+    },
+    "/movimentacoes/resumo": {
+      "get": {
+        "summary": "Obtém um resumo das movimentações",
+        "tags": ["Movimentações"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dataInicio",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data de início para o resumo"
+          },
+          {
+            "in": "query",
+            "name": "dataFim",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "description": "Data de fim para o resumo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resumo das movimentações",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resumo": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Tipo": {
+                            "type": "string"
+                          },
+                          "Total": {
+                            "type": "number"
+                          },
+                          "Quantidade": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "saldo": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cartoes-credito": {
+      "get": {
+        "summary": "Lista todos os cartões de crédito",
+        "tags": ["Cartões de Crédito"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de cartões de crédito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CartaoCredito"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo cartão de crédito",
+        "tags": ["Cartões de Crédito"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartaoCredito"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cartão de crédito criado"
+          }
+        }
+      }
+    },
+    "/cartoes-credito/{id}": {
+      "get": {
+        "summary": "Obtém um cartão de crédito específico",
+        "tags": ["Cartões de Crédito"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do cartão de crédito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CartaoCredito"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um cartão de crédito",
+        "tags": ["Cartões de Crédito"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CartaoCredito"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cartão de crédito atualizado"
+          },
+          "200": {
+            "description": "Cartão de crédito atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um cartão de crédito",
+        "tags": ["Cartões de Crédito"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cartão de crédito excluído"
+          }
+        }
+      }
+    },
+    "/status-pagamento": {
+      "get": {
+        "summary": "Lista todos os status de pagamento",
+        "tags": ["Status de Pagamento"],
+        "responses": {
+          "200": {
+            "description": "Lista de status de pagamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StatusPagamento"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo status de pagamento",
+        "tags": ["Status de Pagamento"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPagamento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Status de pagamento criado"
+          }
+        }
+      }
+    },
+    "/status-pagamento/{id}": {
+      "get": {
+        "summary": "Obtém um status de pagamento específico",
+        "tags": ["Status de Pagamento"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do status de pagamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusPagamento"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um status de pagamento",
+        "tags": ["Status de Pagamento"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPagamento"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status de pagamento atualizado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um status de pagamento",
+        "tags": ["Status de Pagamento"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status de pagamento excluído"
+          }
+        }
+      }
+    }
+  }
+}
+
