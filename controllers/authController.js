@@ -4,6 +4,11 @@ const { Usuario } = require("../models")
 const logger = require("../config/logger")
 
 exports.login = async (req, res) => {
+  // Definir headers CORS explicitamente
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
   logger.info("Login endpoint chamado")
   try {
     const { email, senha } = req.body

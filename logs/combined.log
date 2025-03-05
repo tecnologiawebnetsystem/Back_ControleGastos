@@ -5,3 +5,21 @@
 {"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-04T17:48:13.875Z"}
 {"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-03-04T18:41:14.670Z"}
 {"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-04T18:41:14.689Z"}
+{"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-03-05T02:51:48.586Z"}
+{"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-05T02:51:48.596Z"}
+{"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-03-05T03:35:05.683Z"}
+{"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-05T03:35:05.691Z"}
+{"level":"error","message":"Erro de CORS: Origem https://controle-gastos-api.onrender.com não permitida por CORS","timestamp":"2025-03-05T22:09:41.931Z"}
+{"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-03-05T22:32:21.506Z"}
+{"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-05T22:32:21.528Z"}
+{"level":"error","message":"Erro de CORS: Origem http://localhost:56818 não permitida por CORS","timestamp":"2025-03-05T22:34:11.416Z"}
+{"level":"info","message":"Login endpoint chamado","timestamp":"2025-03-05T22:35:06.487Z"}
+{"level":"info","message":"Tentativa de login para o email: kleber.goncalves.1209@gmail.com","timestamp":"2025-03-05T22:35:06.488Z"}
+{"level":"info","message":"Usuário encontrado: Kleber Gonçalves","timestamp":"2025-03-05T22:35:06.825Z"}
+{"level":"info","message":"Login bem-sucedido para: Kleber Gonçalves (ID: 1)","timestamp":"2025-03-05T22:35:06.951Z"}
+{"level":"error","message":"Erro de CORS: Origem http://localhost:56818 não permitida por CORS","timestamp":"2025-03-05T22:35:21.526Z"}
+{"level":"error","message":"Erro de CORS: Origem http://localhost:58024 não permitida por CORS","timestamp":"2025-03-05T22:59:11.681Z"}
+{"level":"error","message":"Erro de CORS: Origem http://localhost:58024 não permitida por CORS","timestamp":"2025-03-05T22:59:14.301Z"}
+{"level":"error","message":"Erro de CORS: Origem http://localhost:58269 não permitida por CORS","timestamp":"2025-03-05T23:09:11.355Z"}
+{"level":"error","message":"Erro de CORS: Origem https://controle-gastos-api.onrender.com não permitida por CORS","timestamp":"2025-03-05T23:13:19.979Z"}
+{"level":"error","message":"Erro de CORS: Origem https://controle-gastos-api.onrender.com não permitida por CORS","timestamp":"2025-03-05T23:16:14.027Z"}
