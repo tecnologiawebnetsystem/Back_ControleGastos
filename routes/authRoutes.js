@@ -1,16 +1,11 @@
 const express = require("express")
 const router = express.Router()
 const authController = require("../controllers/authController")
+const corsMiddleware = require("../middleware") // Importar o middleware personalizado
 
-// Adicionar middleware para lidar com requisições OPTIONS
-router.options("/login", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-  res.sendStatus(200)
-})
-
-router.post("/login", authController.login)
+// Aplicar o middleware CORS especificamente para a rota de login
+router.options("/login", corsMiddleware)
+router.post("/login", corsMiddleware, authController.login)
 
 module.exports = router
 
