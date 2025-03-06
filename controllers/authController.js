@@ -43,9 +43,12 @@ exports.login = async (req, res) => {
       message: "Login bem-sucedido",
       token,
       usuario: {
-        id: usuario.UsuarioID,
-        nome: usuario.nome,
-        email: usuario.email,
+        UsuarioID: usuario.UsuarioID,
+        Nome: usuario.nome,
+        Email: usuario.email,
+        Login: usuario.login, // Using email as login since there's no separate login field
+        adm: usuario.adm,
+        ativo: usuario.ativo,
       },
     })
   } catch (error) {
