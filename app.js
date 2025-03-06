@@ -5,7 +5,8 @@ const swaggerDocument = require("./swagger.json")
 const routes = require("./routes")
 const { sequelize } = require("./models")
 const logger = require("./config/logger")
-const corsMiddleware = require("./middleware") // Importar o middleware personalizado
+const corsMiddleware = require("./middleware")
+const { printRoutes } = require("./utils/routeLogger")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -59,6 +60,9 @@ sequelize
     logger.info("Conexão com o banco de dados estabelecida com sucesso.")
     app.listen(PORT, () => {
       logger.info(`Servidor rodando na porta ${PORT}`)
+
+      // Listar todas as rotas registradas
+      printRoutes(app)
     })
   })
   .catch((err) => {

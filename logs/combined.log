@@ -23,3 +23,5 @@
 {"level":"error","message":"Erro de CORS: Origem http://localhost:58269 não permitida por CORS","timestamp":"2025-03-05T23:09:11.355Z"}
 {"level":"error","message":"Erro de CORS: Origem https://controle-gastos-api.onrender.com não permitida por CORS","timestamp":"2025-03-05T23:13:19.979Z"}
 {"level":"error","message":"Erro de CORS: Origem https://controle-gastos-api.onrender.com não permitida por CORS","timestamp":"2025-03-05T23:16:14.027Z"}
+{"level":"info","message":"Conexão com o banco de dados estabelecida com sucesso.","timestamp":"2025-03-06T00:11:39.156Z"}
+{"level":"info","message":"Servidor rodando na porta 3000","timestamp":"2025-03-06T00:11:39.164Z"}
