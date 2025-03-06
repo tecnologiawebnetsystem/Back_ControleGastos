@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 app.use("/api", routes)
 
 // Documentação Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // Error handling middleware
 app.use((err, req, res, next) => {
