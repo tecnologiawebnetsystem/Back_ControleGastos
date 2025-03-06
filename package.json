@@ -7,13 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'Build completed'",
-    "deploy": "npm run build && npm start",
-    "render-postbuild": "chmod +x .render-buildtime.sh && ./.render-buildtime.sh",
-    "render-start": "chmod +x .render-runtime.sh && ./.render-runtime.sh && node app.js"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "build": "npm ci --production"
   },
   "keywords": ["node", "mvc", "api", "sql-server", "swagger"],
   "author": "",
@@ -26,9 +20,7 @@
     "swagger-ui-express": "^5.0.0",
     "tedious": "^16.6.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.0",
-    "winston": "^3.8.2",
-    "express-rate-limit": "^6.7.0"
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
