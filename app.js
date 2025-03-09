@@ -6,6 +6,7 @@ const routes = require("./routes")
 const { sequelize } = require("./models")
 const logger = require("./config/logger")
 const { logAllEndpoints } = require("./utils/endpointLogger")
+const requestLogger = require("./middlewares/requestLogger")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3000
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(requestLogger) // Adicione esta linha para registrar todas as requisições
 
 // Rotas
 app.use("/api", routes)
