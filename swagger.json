@@ -15,7 +15,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "bearerFormat": "JWT",
+        "description": "Enter your JWT token in the format: Bearer <token>"
       }
     },
     "schemas": {
@@ -45,12 +46,12 @@
           "CategoriaID": {
             "type": "integer"
           },
+          "UsuarioID": {
+            "type": "integer"
+          },
           "Nome": {
             "type": "string",
             "maxLength": 50
-          },
-          "Coeficiente": {
-            "type": "integer"
           }
         }
       },
@@ -134,6 +135,9 @@
           "TipoContratacaoID": {
             "type": "integer"
           },
+          "UsuarioID": {
+            "type": "integer"
+          },
           "Descricao": {
             "type": "string"
           }
@@ -205,11 +209,11 @@
           "TipoOperacaoID": {
             "type": "integer"
           },
+          "UsuarioID": {
+            "type": "integer"
+          },
           "Descricao": {
             "type": "string"
-          },
-          "Coeficiente": {
-            "type": "integer"
           }
         }
       },
@@ -239,68 +243,6 @@
           },
           "TipoOperacaoID": {
             "type": "integer"
-          }
-        }
-      },
-      "Movimentacao": {
-        "type": "object",
-        "properties": {
-          "MovimentacaoID": {
-            "type": "integer"
-          },
-          "UsuarioID": {
-            "type": "integer"
-          },
-          "Tipo": {
-            "type": "string",
-            "enum": ["Entrada", "Despesa", "Poupanca"]
-          },
-          "Descricao": {
-            "type": "string",
-            "maxLength": 200
-          },
-          "Valor": {
-            "type": "number",
-            "format": "decimal"
-          },
-          "Data": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "CategoriaID": {
-            "type": "integer"
-          },
-          "EmpresaID": {
-            "type": "integer"
-          },
-          "BancoID": {
-            "type": "integer"
-          },
-          "Status": {
-            "type": "string",
-            "maxLength": 20
-          }
-        }
-      },
-      "CartaoCredito": {
-        "type": "object",
-        "properties": {
-          "CartaoCreditoID": {
-            "type": "integer"
-          },
-          "UsuarioID": {
-            "type": "integer"
-          },
-          "BancoID": {
-            "type": "integer"
-          },
-          "ValorCredito": {
-            "type": "number",
-            "format": "decimal"
-          },
-          "DataVencimento": {
-            "type": "string",
-            "format": "date"
           }
         }
       },
@@ -354,25 +296,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
-                      "type": "string"
-                    },
                     "token": {
                       "type": "string"
-                    },
-                    "usuario": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
-                        "nome": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
-                        }
-                      }
                     }
                   }
                 }
@@ -381,9 +306,6 @@
           },
           "401": {
             "description": "Credenciais inválidas"
-          },
-          "500": {
-            "description": "Erro interno do servidor"
           }
         },
         "security": []
@@ -532,8 +454,13 @@
     },
     "/categorias": {
       "get": {
-        "summary": "Lista todas as categorias",
+        "summary": "Lista todas as categorias do usuário",
         "tags": ["Categorias"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de categorias",
@@ -553,6 +480,11 @@
       "post": {
         "summary": "Cria uma nova categoria",
         "tags": ["Categorias"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -574,6 +506,11 @@
       "get": {
         "summary": "Obtém uma categoria específica",
         "tags": ["Categorias"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -600,6 +537,11 @@
       "put": {
         "summary": "Atualiza uma categoria",
         "tags": ["Categorias"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -629,6 +571,11 @@
       "delete": {
         "summary": "Exclui uma categoria",
         "tags": ["Categorias"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -932,6 +879,11 @@
       "get": {
         "summary": "Lista todos os tipos de contratação",
         "tags": ["Tipos de Contratação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de tipos de contratação",
@@ -951,6 +903,11 @@
       "post": {
         "summary": "Cria um novo tipo de contratação",
         "tags": ["Tipos de Contratação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -972,6 +929,11 @@
       "get": {
         "summary": "Obtém um tipo de contratação específico",
         "tags": ["Tipos de Contratação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -998,6 +960,11 @@
       "put": {
         "summary": "Atualiza um tipo de contratação",
         "tags": ["Tipos de Contratação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1027,6 +994,11 @@
       "delete": {
         "summary": "Exclui um tipo de contratação",
         "tags": ["Tipos de Contratação"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1608,389 +1580,15 @@
         }
       }
     },
-    "/movimentacoes": {
-      "get": {
-        "summary": "Lista todas as movimentações",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "dataInicio",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "Data de início para filtrar movimentações"
-          },
-          {
-            "in": "query",
-            "name": "dataFim",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "Data de fim para filtrar movimentações"
-          },
-          {
-            "in": "query",
-            "name": "tipo",
-            "schema": {
-              "type": "string",
-              "enum": ["Entrada", "Despesa", "Poupanca"]
-            },
-            "description": "Tipo de movimentação para filtrar"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de movimentações",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Movimentacao"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Cria uma nova movimentação",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Movimentacao"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Movimentação criada"
-          }
-        }
-      }
-    },
-    "/movimentacoes/{id}": {
-      "get": {
-        "summary": "Obtém uma movimentação específica",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detalhes da movimentação",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Movimentacao"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Atualiza uma movimentação",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Movimentacao"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Movimentação atualizada"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Exclui uma movimentação",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Movimentação excluída"
-          }
-        }
-      }
-    },
-    "/movimentacoes/resumo": {
-      "get": {
-        "summary": "Obtém um resumo das movimentações",
-        "tags": ["Movimentações"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "dataInicio",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "Data de início para o resumo"
-          },
-          {
-            "in": "query",
-            "name": "dataFim",
-            "schema": {
-              "type": "string",
-              "format": "date"
-            },
-            "description": "Data de fim para o resumo"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Resumo das movimentações",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "resumo": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "Tipo": {
-                            "type": "string"
-                          },
-                          "Total": {
-                            "type": "number"
-                          },
-                          "Quantidade": {
-                            "type": "integer"
-                          }
-                        }
-                      }
-                    },
-                    "saldo": {
-                      "type": "number"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cartoes-credito": {
-      "get": {
-        "summary": "Lista todos os cartões de crédito",
-        "tags": ["Cartões de Crédito"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de cartões de crédito",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CartaoCredito"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Cria um novo cartão de crédito",
-        "tags": ["Cartões de Crédito"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CartaoCredito"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Cartão de crédito criado"
-          }
-        }
-      }
-    },
-    "/cartoes-credito/{id}": {
-      "get": {
-        "summary": "Obtém um cartão de crédito específico",
-        "tags": ["Cartões de Crédito"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Detalhes do cartão de crédito",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CartaoCredito"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Atualiza um cartão de crédito",
-        "tags": ["Cartões de Crédito"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CartaoCredito"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Cartão de crédito atualizado"
-          },
-          "200": {
-            "description": "Cartão de crédito atualizado"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Exclui um cartão de crédito",
-        "tags": ["Cartões de Crédito"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Cartão de crédito excluído"
-          }
-        }
-      }
-    },
     "/status-pagamento": {
       "get": {
         "summary": "Lista todos os status de pagamento",
         "tags": ["Status de Pagamento"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de status de pagamento",
@@ -2010,6 +1608,11 @@
       "post": {
         "summary": "Cria um novo status de pagamento",
         "tags": ["Status de Pagamento"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2031,6 +1634,11 @@
       "get": {
         "summary": "Obtém um status de pagamento específico",
         "tags": ["Status de Pagamento"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2057,6 +1665,11 @@
       "put": {
         "summary": "Atualiza um status de pagamento",
         "tags": ["Status de Pagamento"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2086,6 +1699,11 @@
       "delete": {
         "summary": "Exclui um status de pagamento",
         "tags": ["Status de Pagamento"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",

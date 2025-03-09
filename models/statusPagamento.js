@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "StatusPagamento",
       tableName: "StatusPagamento",
-      timestamps: false,
+      timestamps: false, // Assumindo que não há campos de timestamp na tabela
     },
   )
 

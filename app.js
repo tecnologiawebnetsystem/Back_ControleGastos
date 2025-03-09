@@ -5,6 +5,7 @@ const swaggerDocument = require("./swagger.json")
 const routes = require("./routes")
 const { sequelize } = require("./models")
 const logger = require("./config/logger")
+const { logAllEndpoints } = require("./utils/endpointLogger")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -35,6 +36,9 @@ const startServer = (port) => {
   const server = app
     .listen(port, () => {
       logger.info(`Servidor rodando na porta ${port}`)
+
+      // Loga todos os endpoints disponíveis
+      logAllEndpoints()
     })
     .on("error", (err) => {
       if (err.code === "EADDRINUSE") {
