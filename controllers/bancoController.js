@@ -29,19 +29,33 @@ exports.obterBanco = async (req, res) => {
       return res.status(403).json({ message: "Usuário inativo ou não encontrado" })
     }
 
-    logger.info(`Buscando banco ID: ${req.params.id} para o usuário ID: ${req.usuarioId}`)
+    // Verificar se o ID é um valor especial
+    if (req.params.id === "me" || req.params.id === "current") {
+      logger.info(
+        `Redirecionando solicitação de banco 'me' para listar todos os bancos do usuário ID: ${req.usuarioId}`,
+      )
+      return this.listarBancos(req, res)
+    }
+
+    const bancoId = Number.parseInt(req.params.id, 10)
+    if (isNaN(bancoId)) {
+      logger.warn(`ID de banco inválido: ${req.params.id}`)
+      return res.status(400).json({ message: "ID de banco inválido" })
+    }
+
+    logger.info(`Buscando banco ID: ${bancoId} para o usuário ID: ${req.usuarioId}`)
     const banco = await Banco.findOne({
       where: {
-        BancoID: req.params.id,
+        BancoID: bancoId,
         UsuarioID: req.usuarioId,
       },
     })
 
     if (banco) {
-      logger.info(`Banco ID: ${req.params.id} encontrado`)
+      logger.info(`Banco ID: ${bancoId} encontrado`)
       res.json(banco)
     } else {
-      logger.warn(`Banco ID: ${req.params.id} não encontrado para o usuário ID: ${req.usuarioId}`)
+      logger.warn(`Banco ID: ${bancoId} não encontrado para o usuário ID: ${req.usuarioId}`)
       res.status(404).json({ message: "Banco não encontrado" })
     }
   } catch (error) {
@@ -78,20 +92,32 @@ exports.atualizarBanco = async (req, res) => {
       return res.status(403).json({ message: "Usuário inativo ou não encontrado" })
     }
 
-    logger.info(`Atualizando banco ID: ${req.params.id} para o usuário ID: ${req.usuarioId}`)
+    // Verificar se o ID é um valor especial
+    if (req.params.id === "me" || req.params.id === "current") {
+      logger.warn(`Tentativa de atualizar banco com ID especial: ${req.params.id}`)
+      return res.status(400).json({ message: "ID de banco inválido" })
+    }
+
+    const bancoId = Number.parseInt(req.params.id, 10)
+    if (isNaN(bancoId)) {
+      logger.warn(`ID de banco inválido: ${req.params.id}`)
+      return res.status(400).json({ message: "ID de banco inválido" })
+    }
+
+    logger.info(`Atualizando banco ID: ${bancoId} para o usuário ID: ${req.usuarioId}`)
     const banco = await Banco.findOne({
       where: {
-        BancoID: req.params.id,
+        BancoID: bancoId,
         UsuarioID: req.usuarioId,
       },
     })
 
     if (banco) {
       await banco.update(req.body)
-      logger.info(`Banco ID: ${req.params.id} atualizado com sucesso`)
+      logger.info(`Banco ID: ${bancoId} atualizado com sucesso`)
       res.json(banco)
     } else {
-      logger.warn(`Banco ID: ${req.params.id} não encontrado para o usuário ID: ${req.usuarioId}`)
+      logger.warn(`Banco ID: ${bancoId} não encontrado para o usuário ID: ${req.usuarioId}`)
       res.status(404).json({ message: "Banco não encontrado" })
     }
   } catch (error) {
@@ -107,24 +133,61 @@ exports.excluirBanco = async (req, res) => {
       return res.status(403).json({ message: "Usuário inativo ou não encontrado" })
     }
 
-    logger.info(`Excluindo banco ID: ${req.params.id} para o usuário ID: ${req.usuarioId}`)
+    // Verificar se o ID é um valor especial
+    if (req.params.id === "me" || req.params.id === "current") {
+      logger.warn(`Tentativa de excluir banco com ID especial: ${req.params.id}`)
+      return res.status(400).json({ message: "ID de banco inválido" })
+    }
+
+    const bancoId = Number.parseInt(req.params.id, 10)
+    if (isNaN(bancoId)) {
+      logger.warn(`ID de banco inválido: ${req.params.id}`)
+      return res.status(400).json({ message: "ID de banco inválido" })
+    }
+
+    logger.info(`Excluindo banco ID: ${bancoId} para o usuário ID: ${req.usuarioId}`)
     const banco = await Banco.findOne({
       where: {
-        BancoID: req.params.id,
+        BancoID: bancoId,
         UsuarioID: req.usuarioId,
       },
     })
 
     if (banco) {
       await banco.destroy()
-      logger.info(`Banco ID: ${req.params.id} excluído com sucesso`)
+      logger.info(`Banco ID: ${bancoId} excluído com sucesso`)
       res.json({ message: "Banco excluído com sucesso" })
     } else {
-      logger.warn(`Banco ID: ${req.params.id} não encontrado para o usuário ID: ${req.usuarioId}`)
+      logger.warn(`Banco ID: ${bancoId} não encontrado para o usuário ID: ${req.usuarioId}`)
       res.status(404).json({ message: "Banco não encontrado" })
     }
   } catch (error) {
     logger.error(`Erro ao excluir banco: ${error.message}`)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// Adicionar um endpoint para obter o usuário atual
+exports.obterUsuarioAtual = async (req, res) => {
+  try {
+    const usuario = await Usuario.findByPk(req.usuarioId, {
+      attributes: ["UsuarioID", "nome", "email", "adm", "ativo"],
+    })
+
+    if (!usuario) {
+      logger.warn(`Usuário ID: ${req.usuarioId} não encontrado`)
+      return res.status(404).json({ message: "Usuário não encontrado" })
+    }
+
+    if (!usuario.ativo) {
+      logger.warn(`Usuário ID: ${req.usuarioId} está inativo`)
+      return res.status(403).json({ message: "Usuário inativo" })
+    }
+
+    logger.info(`Dados do usuário ID: ${req.usuarioId} retornados com sucesso`)
+    res.json(usuario)
+  } catch (error) {
+    logger.error(`Erro ao obter dados do usuário: ${error.message}`)
     res.status(500).json({ message: error.message })
   }
 }

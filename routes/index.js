@@ -14,7 +14,8 @@ const entradasRoutes = require("./entradasRoutes")
 const tipoOperacaoRoutes = require("./tipoOperacaoRoutes")
 const poupancaRoutes = require("./poupancaRoutes")
 const statusPagamentoRoutes = require("./statusPagamentoRoutes")
-const testRoutes = require("./testRoutes") // Adicione esta linha
+const testRoutes = require("./testRoutes")
+const statusRoutes = require("./statusRoutes")
 
 // Rota para listar todos os endpoints (apenas para desenvolvimento)
 if (process.env.NODE_ENV !== "production") {
@@ -41,7 +42,8 @@ if (process.env.NODE_ENV !== "production") {
 
 // Rotas que não requerem autenticação
 router.use("/auth", authRoutes)
-router.use("/test", testRoutes) // Adicione esta linha
+router.use("/test", testRoutes)
+router.use("/status", statusRoutes)
 
 // Aplicar middleware de autenticação às rotas protegidas
 router.use("/usuarios", authMiddleware, usuarioRoutes)

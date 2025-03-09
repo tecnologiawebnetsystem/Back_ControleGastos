@@ -6,6 +6,9 @@ const authMiddleware = require("../middlewares/authMiddleware")
 // Apply authentication middleware to all bank routes
 router.use(authMiddleware)
 
+// Rota para obter o usuário atual
+router.get("/usuario-atual", bancoController.obterUsuarioAtual)
+
 // Routes for banks
 router.get("/", bancoController.listarBancos)
 router.post("/", bancoController.criarBanco)
