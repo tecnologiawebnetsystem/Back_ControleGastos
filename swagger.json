@@ -171,6 +171,21 @@
           },
           "Ativo": {
             "type": "boolean"
+          },
+          "DiaPagamento_1": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 31,
+            "description": "Dia do mês para o primeiro pagamento (1-31)"
+          },
+          "DiaPagamento_2": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 31,
+            "description": "Dia do mês para o segundo pagamento (1-31)"
+          },
+          "BancoID": {
+            "type": "integer"
           }
         }
       },
